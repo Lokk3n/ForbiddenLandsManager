@@ -13,7 +13,7 @@ public class ViewHandler {
     static ViewHandler instance;
 
     //private static HashMap<String, Class<? extends View>> viewLocator = new HashMap<>();
-    private static HashMap<Class<? extends View>, Class<? extends ViewModel>> viewModelLocator = new HashMap<>();
+    private static HashMap<Class, Class> viewModelLocator = new HashMap<>();
 
 
     public ViewHandler(Stage stage, ViewModelFactory vmf){
@@ -27,11 +27,11 @@ public class ViewHandler {
     }
 
     //public void registerView(String )
-    public void registerViewViewModel(Class<? extends View> view, Class<? extends ViewModel> viewModel){
+    public void registerViewViewModel(Class view, Class viewModel){
         viewModelLocator.put(view, viewModel);
     }
 
-    public Class<? extends ViewModel> resolveViewViewModel(Class<? extends View> view){
+    public Class resolveViewViewModel(Class view){
         return viewModelLocator.get(view);
     }
 

@@ -7,14 +7,22 @@ import java.util.HashMap;
 public class RegionManager {
     private HashMap<String, Region> regionMap = new HashMap<>();
 
+    static private RegionManager instance;
+
+    public RegionManager(){
+        instance = this;
+    }
+
+    public static RegionManager getInstance(){
+        return instance;
+    }
+
     public void registerRegion(String name, Region region){
-        if(regionMap.containsKey(name)){
-            regionMap.remove(name);
-        }
+        regionMap.remove(name);
         regionMap.put(name, region);
     }
 
-    public void requestNavigate(String regionName, Class<? extends View> view, NavigationParameters parameters){
+    public void requestNavigate(String regionName, Class view, NavigationParameters parameters){
         regionMap.get(regionName).requestNavigate(view, parameters);
     }
 }
