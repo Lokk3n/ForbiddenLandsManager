@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.UUID;
 
 public class EventAggregator {
-    private static HashMap<Class<? extends Event<?>>, Event<?>> eventMap = new HashMap<>();
+    private HashMap<Class<? extends Event<?>>, Event<?>> eventMap = new HashMap<>();
 
-    public static <T extends Event<?>> T getEvent(Class<T> key) {
+    public <T extends Event<?>> T getEvent(Class<T> key) {
         if(eventMap.containsKey(key)) return (T) eventMap.get(key);
         else{
             try {

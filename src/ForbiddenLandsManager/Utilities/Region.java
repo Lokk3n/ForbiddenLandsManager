@@ -1,5 +1,6 @@
 package ForbiddenLandsManager.Utilities;
 
+import ForbiddenLandsManager.Utilities.Events.NavigationEvent;
 import ForbiddenLandsManager.View.View;
 import ForbiddenLandsManager.View.ViewHandler;
 import ForbiddenLandsManager.ViewModel.ViewModel;
@@ -10,13 +11,20 @@ import java.util.LinkedList;
 
 public class Region extends Pane {
 
+    private Event<String> navigationEvent = ServiceLocator.getEventAggregator().getEvent(NavigationEvent.class);
     //private Pane pane = new Pane();
     private LinkedList<ViewModel> viewModels = new LinkedList<>();
     private ViewModel activeViewModel;
     private View activeView;
+    private String name;
 
     public Region(String name, RegionManager manager){
         manager.registerRegion(name, this);
+        this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void requestNavigate(Class view, NavigationParameters parameters){
@@ -47,6 +55,8 @@ public class Region extends Pane {
                 this.getChildren().add(activeView);
             } catch (Exception ex) {
                 System.out.println("navigation error");
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("Cause: " + ex.getCause());
             }
         }
         else{
@@ -65,7 +75,11 @@ public class Region extends Pane {
                 System.out.println(this.getChildren().size());
             } catch (Exception ex) {
                 System.out.println("navigation error");
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("Cause: " + ex.getCause());
             }
         }
+        System.out.println("Fire navigation event");
+        navigationEvent.fire(this.name);
     }
 }

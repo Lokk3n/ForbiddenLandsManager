@@ -1,15 +1,12 @@
 package ForbiddenLandsManager;
 
 import ForbiddenLandsManager.Model.ModelFactory;
-import ForbiddenLandsManager.Utilities.Event;
-import ForbiddenLandsManager.Utilities.EventAggregator;
+import ForbiddenLandsManager.Playground.TestClass;
+import ForbiddenLandsManager.Utilities.*;
+import ForbiddenLandsManager.Utilities.Events.NavigationEvent;
 import ForbiddenLandsManager.Utilities.Events.TestEvent;
-import ForbiddenLandsManager.Utilities.NavigationParameters;
-import ForbiddenLandsManager.Utilities.RegionManager;
-import ForbiddenLandsManager.View.MainTestView;
-import ForbiddenLandsManager.View.TestView1;
-import ForbiddenLandsManager.View.TestView2;
-import ForbiddenLandsManager.View.ViewHandler;
+import ForbiddenLandsManager.View.*;
+import ForbiddenLandsManager.ViewModel.CharacterSheetViewModel;
 import ForbiddenLandsManager.ViewModel.TestViewModel1;
 import ForbiddenLandsManager.ViewModel.TestViewModel2;
 import ForbiddenLandsManager.ViewModel.ViewModelFactory;
@@ -24,19 +21,36 @@ public class FLManager extends Application {
         ViewModelFactory vmf = new ViewModelFactory(mf);
         ViewHandler viewHandler = new ViewHandler(stage, vmf);
         RegionManager regionManager = new RegionManager();
+        EventAggregator eventAggregator = new EventAggregator();
+
+        ServiceLocator.registerEventAggregator(eventAggregator);
+        ServiceLocator.registerRegionManager(regionManager);
+        ServiceLocator.registerViewHandler(viewHandler);
+        ServiceLocator.registerViewModelFactory(vmf);
+
         viewHandler.registerViewViewModel(TestView1.class, TestViewModel1.class);
         viewHandler.registerViewViewModel(TestView2.class, TestViewModel2.class);
+        viewHandler.registerViewViewModel(AttributesView.class, CharacterSheetViewModel.class);
+
+
+        NavigationEvent navEvent = ServiceLocator.getEventAggregator().getEvent(NavigationEvent.class);
+        navEvent.subscribe((text)->{
+            stage.sizeToScene();
+            System.out.println("navigation observed");
+        });
+
         stage.setTitle("Forbidden Lands Manager");
         MainTestView mtv = new MainTestView();
         Scene scene = new Scene(mtv);
         stage.setScene(scene);
         stage.show();
         regionManager.requestNavigate("region1", TestView1.class, new NavigationParameters());
-        Thread.sleep(5000);
         regionManager.requestNavigate("region1", TestView2.class, new NavigationParameters());
+        TestEvent tev = ServiceLocator.getEventAggregator().getEvent(TestEvent.class);
 
-        TestEvent tev = EventAggregator.getEvent(TestEvent.class);
-
+        TestClass tc = new TestClass(5);
+        tc.x = 12;
+        TestClass tc2 = new TestClass(7);
         tev.fire("hejho");
     }
 }
