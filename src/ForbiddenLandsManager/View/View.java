@@ -26,6 +26,7 @@ public abstract class View extends Pane {
 
     protected void createBindings() {
         try {
+            unbindAllProperties();
             registerBindings();
             for(Property<?> property : bindingsMap.keySet()){
                 bindProperty(property, bindingsMap.get(property));
@@ -49,6 +50,7 @@ public abstract class View extends Pane {
             for (Property<?> property : bindingsMap.keySet()) {
                 unbindProperty(property, bindingsMap.get(property));
             }
+            bindingsMap = new HashMap<>();
         }
         catch(Exception ex){
             System.out.println(ex.getMessage());

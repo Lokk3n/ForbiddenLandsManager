@@ -24,7 +24,7 @@ public class MainTestView extends Pane {
         });
 
         showAttributesButton.setOnAction((ev)->{
-            ServiceLocator.getRegionManager().requestNavigate("region1", AttributesView.class, new NavigationParameters());
+            ServiceLocator.getRegionManager().requestNavigate("region1", CharacterSheetView.class, new NavigationParameters());
         });
 
         column.getChildren().addAll(showFirstViewButton, showSecondViewButton, showAttributesButton, new TestViewRegion());

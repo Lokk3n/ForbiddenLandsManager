@@ -39,6 +39,9 @@ public class ConditionsView extends View{
 
     @Override
     protected void registerBindings() {
-
+        this.bindingsMap.put(sleeplessCheckbox.selectedProperty(), "sleeplessValueProperty");
+        this.bindingsMap.put(hungryCheckbox.selectedProperty(), "hungryValueProperty");
+        this.bindingsMap.put(thirstyCheckbox.selectedProperty(), "thirstyValueProperty");
+        this.bindingsMap.put(coldCheckbox.selectedProperty(), "coldValueProperty");
     }
 }
