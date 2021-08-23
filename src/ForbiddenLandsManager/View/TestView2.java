@@ -3,7 +3,7 @@ package ForbiddenLandsManager.View;
 import ForbiddenLandsManager.ViewModel.TestViewModel2;
 import javafx.scene.control.Label;
 
-public class TestView2 extends View<TestViewModel2>{
+public class TestView2 extends View{
 
     Label text2 = new Label("Test View 2");
 

@@ -11,6 +11,21 @@ public class AttributesViewModel extends ViewModel implements INavigationAware {
     IntegerProperty witsValue = new SimpleIntegerProperty();
     IntegerProperty empathyValue = new SimpleIntegerProperty();
 
+    public AttributesViewModel() {
+        strengthValue.addListener(((observableValue, number, t1) -> {
+            System.out.println("Change in strength on viewmodel detected");
+        }));
+        agilityValue.addListener(((observableValue, number, t1) -> {
+            System.out.println("Change in agility on viewmodel detected");
+        }));
+        witsValue.addListener(((observableValue, number, t1) -> {
+            System.out.println("Change in wits on viewmodel detected");
+        }));
+        empathyValue.addListener(((observableValue, number, t1) -> {
+            System.out.println("Change in empathy on viewmodel detected");
+        }));
+    }
+
 
     public int getStrengthValue() {
         return strengthValue.get();

@@ -13,7 +13,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class AttributesView extends View<AttributesViewModel> {
+import java.lang.reflect.InvocationTargetException;
+
+public class AttributesView extends View {
 
     //Attributes
     Label strengthLabel = new Label("Strength");
@@ -108,12 +110,9 @@ public class AttributesView extends View<AttributesViewModel> {
 
 
     @Override
-    public void setDataContext(AttributesViewModel dataContext){
+    public void setDataContext(ViewModel dataContext){
         this.dataContext = dataContext;
-        this.strengthValue.bindBidirectional(this.dataContext.strengthValueProperty());
-        this.agilityValue.bindBidirectional(this.dataContext.agilityValueProperty());
-        this.witsValue.bindBidirectional(this.dataContext.witsValueProperty());
-        this.empathyValue.bindBidirectional(this.dataContext.empathyValueProperty());
+        createBindings();
 
         reactToViewModelChange(strengthCheckboxes, strengthValue.getValue());
         reactToViewModelChange(agilityCheckboxes, agilityValue.getValue());
@@ -137,4 +136,20 @@ public class AttributesView extends View<AttributesViewModel> {
             reactToViewModelChange(empathyCheckboxes, (Integer) newValue);
         });
     }
+
+    @Override
+    public void createBindings() {
+        try {
+            bindProperties(strengthValue, "strengthValueProperty");
+            bindProperties(agilityValue, "agilityValueProperty");
+            bindProperties(witsValue, "witsValueProperty");
+            bindProperties(empathyValue, "empathyValueProperty");
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+
+
 }
