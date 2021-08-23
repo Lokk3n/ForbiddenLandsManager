@@ -1,19 +1,11 @@
 package ForbiddenLandsManager.View;
 
-import ForbiddenLandsManager.ViewModel.AttributesViewModel;
-import ForbiddenLandsManager.ViewModel.ViewModel;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class AttributesView extends View {
 
@@ -109,11 +101,10 @@ public class AttributesView extends View {
 
 
 
-    @Override
-    public void setDataContext(ViewModel dataContext){
-        this.dataContext = dataContext;
-        createBindings();
 
+
+    @Override
+    public void postSetDataContextUpdates(){
         reactToViewModelChange(strengthCheckboxes, strengthValue.getValue());
         reactToViewModelChange(agilityCheckboxes, agilityValue.getValue());
         reactToViewModelChange(witsCheckboxes, witsValue.getValue());
@@ -138,18 +129,10 @@ public class AttributesView extends View {
     }
 
     @Override
-    public void createBindings() {
-        try {
-            bindProperties(strengthValue, "strengthValueProperty");
-            bindProperties(agilityValue, "agilityValueProperty");
-            bindProperties(witsValue, "witsValueProperty");
-            bindProperties(empathyValue, "empathyValueProperty");
-        }
-        catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
+    protected void registerBindings(){
+        this.bindingsMap.put(strengthValue, "strengthValueProperty");
+        this.bindingsMap.put(agilityValue, "agilityValueProperty");
+        this.bindingsMap.put(witsValue, "witsValueProperty");
+        this.bindingsMap.put(empathyValue, "empathyValueProperty");
     }
-
-
-
 }

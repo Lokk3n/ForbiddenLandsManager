@@ -31,4 +31,14 @@ public class ConditionsView extends View{
 
         this.getChildren().add(conditionsGrid);
     }
+
+    @Override
+    protected void postSetDataContextUpdates() {
+
+    }
+
+    @Override
+    protected void registerBindings() {
+
+    }
 }

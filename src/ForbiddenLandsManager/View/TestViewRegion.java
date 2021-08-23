@@ -16,4 +16,14 @@ public class TestViewRegion extends View{
         this.getChildren().add(vbox);
         vbox.getChildren().addAll(regionLabel, region1);
     }
+
+    @Override
+    protected void postSetDataContextUpdates() {
+
+    }
+
+    @Override
+    protected void registerBindings() {
+
+    }
 }

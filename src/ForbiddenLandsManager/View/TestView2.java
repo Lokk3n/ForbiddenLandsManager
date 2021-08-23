@@ -10,4 +10,14 @@ public class TestView2 extends View{
     public TestView2(){
         this.getChildren().add(text2);
     }
+
+    @Override
+    protected void postSetDataContextUpdates() {
+
+    }
+
+    @Override
+    protected void registerBindings() {
+
+    }
 }

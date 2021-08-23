@@ -53,6 +53,7 @@ public class Region extends Pane {
                 if (activeViewModel instanceof INavigationAware) {
                     ((INavigationAware) activeViewModel).OnNavigateFrom(parameters);
                 }
+                if(activeView != null) activeView.unbindAllProperties();
                 activeView = (View) view.getDeclaredConstructor(null).newInstance();
                 activeView.setDataContext(viewModel);
                 activeViewModel = viewModel;
@@ -70,6 +71,7 @@ public class Region extends Pane {
             try {
                 if (activeViewModel instanceof INavigationAware)
                     ((INavigationAware) activeViewModel).OnNavigateFrom(parameters);
+                if(activeView != null) activeView.unbindAllProperties();
                 activeView = (View) view.getDeclaredConstructor(null).newInstance();
                 ViewModel newViewModelInstance = ViewModelFactory.getInstance().generateViewModel(newViewModel);
                 activeView.setDataContext(newViewModelInstance);
