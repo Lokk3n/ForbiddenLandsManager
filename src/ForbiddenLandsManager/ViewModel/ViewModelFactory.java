@@ -21,8 +21,8 @@ public class ViewModelFactory {
             return (T) new TestViewModel1();
         } else if (TestViewModel2.class.equals(viewModelClass)) {
             return (T) new TestViewModel2();
-        } else if (CharacterSheetViewModel.class.equals(viewModelClass)) {
-            return (T) new CharacterSheetViewModel();
+        } else if (AttributesViewModel.class.equals(viewModelClass)) {
+            return (T) new AttributesViewModel();
         }
         else return null;
     }

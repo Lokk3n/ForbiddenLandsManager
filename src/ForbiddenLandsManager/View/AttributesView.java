@@ -1,7 +1,11 @@
 package ForbiddenLandsManager.View;
 
+import ForbiddenLandsManager.ViewModel.AttributesViewModel;
+import ForbiddenLandsManager.ViewModel.ViewModel;
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,7 +13,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class AttributesView extends View {
+public class AttributesView extends View<AttributesViewModel> {
 
     //Attributes
     Label strengthLabel = new Label("Strength");
@@ -69,28 +73,68 @@ public class AttributesView extends View {
         attributeGrid.add(empathyCheckboxes[4], 5, 3);
         attributeGrid.add(empathyCheckboxes[5], 6, 3);
 
-        registerCheckboxActions(strengthCheckboxes);
-        registerCheckboxActions(agilityCheckboxes);
-        registerCheckboxActions(witsCheckboxes);
-        registerCheckboxActions(empathyCheckboxes);
+        registerCheckboxActions(strengthCheckboxes, strengthValue);
+        registerCheckboxActions(agilityCheckboxes, agilityValue);
+        registerCheckboxActions(witsCheckboxes, witsValue);
+        registerCheckboxActions(empathyCheckboxes, empathyValue);
 
         this.getChildren().add(attributeGrid);
     }
 
-    void registerCheckboxActions(CheckBox[] checkBoxes){
-        for(int i = 0; i < checkBoxes.length; i++){
-            checkBoxes[i].setOnAction((ev)->{
+    void registerCheckboxActions(CheckBox[] checkBoxes, IntegerProperty property){
+        for (CheckBox checkBox : checkBoxes) {
+            checkBox.setOnAction((ev) -> {
                 int index = 0;
-                for(int j = 0; j < checkBoxes.length; j++){
-                    if(ev.getSource().equals(checkBoxes[j])){
+                for (int j = 0; j < checkBoxes.length; j++) {
+                    if (ev.getSource().equals(checkBoxes[j])) {
                         index = j;
                         break;
                     }
                 }
-                for(int j = 0; j < checkBoxes.length; j++){
+                property.setValue(index+1);
+                for (int j = 0; j < checkBoxes.length; j++) {
                     checkBoxes[j].setSelected(j <= index);
                 }
             });
         }
+    }
+
+    void reactToViewModelChange(CheckBox[] checkboxes, int newValue){
+        for(int i = 0; i < checkboxes.length; i++){
+            checkboxes[i].setSelected(i < newValue);
+        }
+    }
+
+
+
+    @Override
+    public void setDataContext(AttributesViewModel dataContext){
+        this.dataContext = dataContext;
+        this.strengthValue.bindBidirectional(this.dataContext.strengthValueProperty());
+        this.agilityValue.bindBidirectional(this.dataContext.agilityValueProperty());
+        this.witsValue.bindBidirectional(this.dataContext.witsValueProperty());
+        this.empathyValue.bindBidirectional(this.dataContext.empathyValueProperty());
+
+        reactToViewModelChange(strengthCheckboxes, strengthValue.getValue());
+        reactToViewModelChange(agilityCheckboxes, agilityValue.getValue());
+        reactToViewModelChange(witsCheckboxes, witsValue.getValue());
+        reactToViewModelChange(empathyCheckboxes, empathyValue.getValue());
+
+        this.strengthValue.addListener((observable, oldValue, newValue) -> {
+            System.out.println("Strength changed from " + oldValue + " to: " + newValue);
+            reactToViewModelChange(strengthCheckboxes, (Integer) newValue);
+        });
+        this.agilityValue.addListener((observable, oldValue, newValue) -> {
+            System.out.println("Agility changed from " + oldValue + " to: " + newValue);
+            reactToViewModelChange(agilityCheckboxes, (Integer) newValue);
+        });
+        this.witsValue.addListener((observable, oldValue, newValue) -> {
+            System.out.println("Wits changed from " + oldValue + " to: " + newValue);
+            reactToViewModelChange(witsCheckboxes, (Integer) newValue);
+        });
+        this.empathyValue.addListener((observable, oldValue, newValue) -> {
+            System.out.println("Empathy changed from " + oldValue + " to: " + newValue);
+            reactToViewModelChange(empathyCheckboxes, (Integer) newValue);
+        });
     }
 }

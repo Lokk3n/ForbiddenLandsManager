@@ -32,9 +32,13 @@ public class Region extends Pane {
         Class newViewModel = ViewHandler.getInstance().resolveViewViewModel(view);
         boolean foundContextViewModel = false;
         for(ViewModel vm : viewModels){
+            System.out.println("Checking view model...");
             if(vm.getClass() == newViewModel){
+                System.out.println("Found view model of same class as requested");
                 if(vm instanceof INavigationAware){
+                    System.out.println("View model is an instance of INavigationAware");
                     if(((INavigationAware)vm).IsNavigationContext(parameters)){
+                        System.out.println("View model is navigation context");
                         viewModel = vm;
                         foundContextViewModel = true;
                     }
@@ -44,9 +48,11 @@ public class Region extends Pane {
             }
         }
         if(foundContextViewModel) {
+            System.out.println("Found context view model");
             try {
-                if (activeViewModel instanceof INavigationAware)
+                if (activeViewModel instanceof INavigationAware) {
                     ((INavigationAware) activeViewModel).OnNavigateFrom(parameters);
+                }
                 activeView = (View) view.getDeclaredConstructor(null).newInstance();
                 activeView.setDataContext(viewModel);
                 activeViewModel = viewModel;
@@ -60,6 +66,7 @@ public class Region extends Pane {
             }
         }
         else{
+            System.out.println("Generating new view model");
             try {
                 if (activeViewModel instanceof INavigationAware)
                     ((INavigationAware) activeViewModel).OnNavigateFrom(parameters);
@@ -68,11 +75,9 @@ public class Region extends Pane {
                 activeView.setDataContext(newViewModelInstance);
                 activeViewModel = newViewModelInstance;
                 if (newViewModelInstance instanceof INavigationAware) ((INavigationAware) newViewModelInstance).OnNavigateTo(parameters);
-                System.out.println(this.getChildren().size());
                 this.getChildren().clear();
-                System.out.println(this.getChildren().size());
                 this.getChildren().add(activeView);
-                System.out.println(this.getChildren().size());
+                viewModels.add(activeViewModel);
             } catch (Exception ex) {
                 System.out.println("navigation error");
                 System.out.println("Message: " + ex.getMessage());

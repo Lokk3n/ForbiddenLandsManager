@@ -6,7 +6,7 @@ import ForbiddenLandsManager.Utilities.*;
 import ForbiddenLandsManager.Utilities.Events.NavigationEvent;
 import ForbiddenLandsManager.Utilities.Events.TestEvent;
 import ForbiddenLandsManager.View.*;
-import ForbiddenLandsManager.ViewModel.CharacterSheetViewModel;
+import ForbiddenLandsManager.ViewModel.AttributesViewModel;
 import ForbiddenLandsManager.ViewModel.TestViewModel1;
 import ForbiddenLandsManager.ViewModel.TestViewModel2;
 import ForbiddenLandsManager.ViewModel.ViewModelFactory;
@@ -30,7 +30,7 @@ public class FLManager extends Application {
 
         viewHandler.registerViewViewModel(TestView1.class, TestViewModel1.class);
         viewHandler.registerViewViewModel(TestView2.class, TestViewModel2.class);
-        viewHandler.registerViewViewModel(AttributesView.class, CharacterSheetViewModel.class);
+        viewHandler.registerViewViewModel(AttributesView.class, AttributesViewModel.class);
 
 
         NavigationEvent navEvent = ServiceLocator.getEventAggregator().getEvent(NavigationEvent.class);

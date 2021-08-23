@@ -3,10 +3,10 @@ package ForbiddenLandsManager.View;
 import ForbiddenLandsManager.ViewModel.ViewModel;
 import javafx.scene.layout.Pane;
 
-public class View extends Pane {
-    private ViewModel dataContext;
+public class View<T extends ViewModel> extends Pane {
+    protected T dataContext;
 
-    public void setDataContext(ViewModel vm){
+    public void setDataContext(T vm){
         this.dataContext = vm;
     }
     public ViewModel getDataContext() { return dataContext; }
