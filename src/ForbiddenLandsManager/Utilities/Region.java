@@ -60,6 +60,8 @@ public class Region extends Pane {
                 ((INavigationAware) viewModel).OnNavigateTo(parameters);
                 this.getChildren().clear();
                 this.getChildren().add(activeView);
+                activeView.prefWidthProperty().bind(this.widthProperty());
+                activeView.prefHeightProperty().bind(this.heightProperty());
             } catch (Exception ex) {
                 System.out.println("navigation error");
                 System.out.println("Message: " + ex.getMessage());
@@ -79,6 +81,8 @@ public class Region extends Pane {
                 if (newViewModelInstance instanceof INavigationAware) ((INavigationAware) newViewModelInstance).OnNavigateTo(parameters);
                 this.getChildren().clear();
                 this.getChildren().add(activeView);
+                activeView.prefWidthProperty().bind(this.widthProperty());
+                activeView.prefHeightProperty().bind(this.heightProperty());
                 viewModels.add(activeViewModel);
             } catch (Exception ex) {
                 System.out.println("navigation error");

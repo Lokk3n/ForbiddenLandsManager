@@ -32,7 +32,7 @@ public class FLManager extends Application {
 
         NavigationEvent navEvent = ServiceLocator.getEventAggregator().getEvent(NavigationEvent.class);
         navEvent.subscribe((text)->{
-            stage.sizeToScene();
+            //stage.sizeToScene();
             System.out.println("navigation observed");
         });
 
@@ -40,6 +40,10 @@ public class FLManager extends Application {
         MainTestView mtv = new MainTestView();
         Scene scene = new Scene(mtv);
         stage.setScene(scene);
+        stage.setMinWidth(900);
+        stage.setMinHeight(1000);
+        mtv.prefWidthProperty().bind(stage.widthProperty());
+        mtv.prefHeightProperty().bind(stage.heightProperty());
         stage.show();
         regionManager.requestNavigate("region1", TestView1.class, new NavigationParameters());
         regionManager.requestNavigate("region1", TestView2.class, new NavigationParameters());

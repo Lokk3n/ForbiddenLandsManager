@@ -1,7 +1,6 @@
 package ForbiddenLandsManager.View;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -22,6 +21,10 @@ public class AttributesView extends View {
     IntegerProperty agilityValue = new SimpleIntegerProperty();
     IntegerProperty witsValue = new SimpleIntegerProperty();
     IntegerProperty empathyValue = new SimpleIntegerProperty();
+    IntegerProperty strengthMaxValue = new SimpleIntegerProperty();
+    IntegerProperty agilityMaxValue = new SimpleIntegerProperty();
+    IntegerProperty witsMaxValue = new SimpleIntegerProperty();
+    IntegerProperty empathyMaxValue = new SimpleIntegerProperty();
 
 
     GridPane attributeGrid = new GridPane();
@@ -67,19 +70,19 @@ public class AttributesView extends View {
         attributeGrid.add(empathyCheckboxes[4], 5, 3);
         attributeGrid.add(empathyCheckboxes[5], 6, 3);
 
-        registerCheckboxActions(strengthCheckboxes, strengthValue);
-        registerCheckboxActions(agilityCheckboxes, agilityValue);
-        registerCheckboxActions(witsCheckboxes, witsValue);
-        registerCheckboxActions(empathyCheckboxes, empathyValue);
 
         this.getChildren().add(attributeGrid);
+        //this.setCenter(attributeGrid);
     }
 
-    void registerCheckboxActions(CheckBox[] checkBoxes, IntegerProperty property){
+    void registerCheckboxActions(CheckBox[] checkBoxes, IntegerProperty property, IntegerProperty maxProperty){
+        for(int i = maxProperty.getValue(); i < checkBoxes.length; i++){
+            checkBoxes[i].setVisible(false);
+        }
         for (CheckBox checkBox : checkBoxes) {
             checkBox.setOnAction((ev) -> {
                 int index = 0;
-                for (int j = 0; j < checkBoxes.length; j++) {
+                for (int j = 0; j < checkBoxes.length && j < maxProperty.getValue(); j++) {
                     if (ev.getSource().equals(checkBoxes[j])) {
                         index = j;
                         break;
@@ -110,6 +113,12 @@ public class AttributesView extends View {
         reactToViewModelChange(witsCheckboxes, witsValue.getValue());
         reactToViewModelChange(empathyCheckboxes, empathyValue.getValue());
 
+
+        registerCheckboxActions(strengthCheckboxes, strengthValue, strengthMaxValue);
+        registerCheckboxActions(agilityCheckboxes, agilityValue, agilityMaxValue);
+        registerCheckboxActions(witsCheckboxes, witsValue, witsMaxValue);
+        registerCheckboxActions(empathyCheckboxes, empathyValue, empathyMaxValue);
+
         this.strengthValue.addListener((observable, oldValue, newValue) -> {
             System.out.println("Strength changed from " + oldValue + " to: " + newValue);
             reactToViewModelChange(strengthCheckboxes, (Integer) newValue);
@@ -130,9 +139,13 @@ public class AttributesView extends View {
 
     @Override
     protected void registerBindings(){
-        this.bindingsMap.put(strengthValue, "strengthValueProperty");
-        this.bindingsMap.put(agilityValue, "agilityValueProperty");
-        this.bindingsMap.put(witsValue, "witsValueProperty");
-        this.bindingsMap.put(empathyValue, "empathyValueProperty");
+        this.propertyBindingMap.put(strengthValue, "strengthValueProperty");
+        this.propertyBindingMap.put(agilityValue, "agilityValueProperty");
+        this.propertyBindingMap.put(witsValue, "witsValueProperty");
+        this.propertyBindingMap.put(empathyValue, "empathyValueProperty");
+        this.propertyBindingMap.put(strengthMaxValue, "strengthMaxValueProperty");
+        this.propertyBindingMap.put(agilityMaxValue, "agilityMaxValueProperty");
+        this.propertyBindingMap.put(witsMaxValue, "witsMaxValueProperty");
+        this.propertyBindingMap.put(empathyMaxValue, "empathyMaxValueProperty");
     }
 }

@@ -7,14 +7,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TestViewRegion extends View{
-    Label regionLabel = new Label("region view");
     Region region1 = new Region("region1", RegionManager.getInstance());
-    VBox vbox = new VBox();
 
 
     public TestViewRegion(){
-        this.getChildren().add(vbox);
-        vbox.getChildren().addAll(regionLabel, region1);
+        this.getChildren().add(region1);
+        region1.prefWidthProperty().bind(this.widthProperty());
+        region1.prefHeightProperty().bind(this.heightProperty());
     }
 
     @Override

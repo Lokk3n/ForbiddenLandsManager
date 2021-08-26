@@ -30,6 +30,7 @@ public class ConditionsView extends View{
         conditionsGrid.add(coldCheckbox, 1, 3);
 
         this.getChildren().add(conditionsGrid);
+        //this.setCenter(conditionsGrid);
     }
 
     @Override
@@ -39,9 +40,9 @@ public class ConditionsView extends View{
 
     @Override
     protected void registerBindings() {
-        this.bindingsMap.put(sleeplessCheckbox.selectedProperty(), "sleeplessValueProperty");
-        this.bindingsMap.put(hungryCheckbox.selectedProperty(), "hungryValueProperty");
-        this.bindingsMap.put(thirstyCheckbox.selectedProperty(), "thirstyValueProperty");
-        this.bindingsMap.put(coldCheckbox.selectedProperty(), "coldValueProperty");
+        this.propertyBindingMap.put(sleeplessCheckbox.selectedProperty(), "sleeplessValueProperty");
+        this.propertyBindingMap.put(hungryCheckbox.selectedProperty(), "hungryValueProperty");
+        this.propertyBindingMap.put(thirstyCheckbox.selectedProperty(), "thirstyValueProperty");
+        this.propertyBindingMap.put(coldCheckbox.selectedProperty(), "coldValueProperty");
     }
 }
