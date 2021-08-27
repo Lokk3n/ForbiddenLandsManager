@@ -3,8 +3,8 @@ package ForbiddenLandsManager.View;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class ArmorView extends View{
     Label helmetNameLabel = new Label("Helmet name: ");
@@ -44,6 +44,9 @@ public class ArmorView extends View{
         this.getChildren().add(armorGridPane);
         armorGridPane.prefWidthProperty().bind(this.widthProperty());
         armorGridPane.prefHeightProperty().bind(this.heightProperty());
+
+
+        armorGridPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     @Override

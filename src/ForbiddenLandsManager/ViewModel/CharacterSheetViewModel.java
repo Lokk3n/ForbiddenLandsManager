@@ -3,6 +3,8 @@ package ForbiddenLandsManager.ViewModel;
 import ForbiddenLandsManager.Enums.AttributeType;
 import ForbiddenLandsManager.Model.Injury;
 import ForbiddenLandsManager.Model.Skill;
+import ForbiddenLandsManager.Model.Talent;
+import ForbiddenLandsManager.Model.Weapon;
 import ForbiddenLandsManager.Utilities.CommandParameters;
 import ForbiddenLandsManager.Utilities.INavigationAware;
 import ForbiddenLandsManager.Utilities.NavigationParameters;
@@ -36,6 +38,15 @@ public class CharacterSheetViewModel extends ViewModel implements INavigationAwa
 
     ObservableList<Skill> skillsObservableList = FXCollections.observableList(new LinkedList<>());
     ListProperty<Skill> skillsListProperty = new SimpleListProperty<>(skillsObservableList);
+
+
+    ObservableList<Talent> talentsObservableList = FXCollections.observableList(new LinkedList<>());
+
+    ListProperty<Talent> talentsListProperty = new SimpleListProperty<>(talentsObservableList);
+
+
+    ObservableList<Weapon> weaponsObservableList = FXCollections.observableList(new LinkedList<>());
+    ListProperty<Weapon> weaponsListProperty = new SimpleListProperty<>(weaponsObservableList);
 
 
     public int getStrengthValue() {
@@ -150,11 +161,32 @@ public class CharacterSheetViewModel extends ViewModel implements INavigationAwa
         return skillsListProperty;
     }
 
+    public ObservableList<Talent> getTalentsListProperty() {
+        return talentsListProperty.get();
+    }
+
+    public ListProperty<Talent> talentsListPropertyProperty() {
+        return talentsListProperty;
+    }
+
+    public ObservableList<Weapon> getWeaponsListProperty() {
+        return weaponsListProperty.get();
+    }
+
+    public ListProperty<Weapon> weaponsListPropertyProperty() {
+        return weaponsListProperty;
+    }
+
 
 
     public void addNewInjury(CommandParameters parameters){
         //injuriesList.add("DD");
         injuriesObservableList.add(new Injury("Fractured bone", "-2 to strength"));
+    }
+
+    public void addNewTalent(CommandParameters parameters){
+        //injuriesList.add("DD");
+        talentsObservableList.add(new Talent("Defender", "Free parry every round"));
     }
 
     public CharacterSheetViewModel() {
@@ -177,6 +209,7 @@ public class CharacterSheetViewModel extends ViewModel implements INavigationAwa
         empathyMaxValue.set(2);
 
         loadSkills();
+        loadWeapons();
     }
 
     private void loadSkills(){
@@ -196,6 +229,11 @@ public class CharacterSheetViewModel extends ViewModel implements INavigationAwa
         skillsObservableList.add(new Skill("Performance", 4, AttributeType.EMPATHY));
         skillsObservableList.add(new Skill("Healing", 4, AttributeType.EMPATHY));
         skillsObservableList.add(new Skill("Animal Handling", 4, AttributeType.EMPATHY));
+    }
+
+    private void loadWeapons(){
+        weaponsObservableList.add(new Weapon("Pederazor", 2, 3, "pointed, slashing, heavy, parry", "Cold blooded lvl1"));
+        weaponsObservableList.add(new Weapon("Rdzawy kąs", 2, 3, "pointed, slashing, heavy, parry", "d8, d10 against deamons"));
     }
 
     @Override

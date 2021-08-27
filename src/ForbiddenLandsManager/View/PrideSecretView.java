@@ -3,7 +3,8 @@ package ForbiddenLandsManager.View;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class PrideSecretView extends View {
 
@@ -33,6 +34,10 @@ public class PrideSecretView extends View {
         this.getChildren().addAll(column);
         column.prefHeightProperty().bind(this.heightProperty());
         column.prefWidthProperty().bind(this.widthProperty());
+
+
+        column.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, new CornerRadii(20), BorderWidths.DEFAULT)));
+
         this.setMinHeight(350);
     }
 

@@ -15,6 +15,9 @@ public class CharacterSheetView extends View{
     SkillsView skillsView = new SkillsView();
     PrideSecretView prideSecretView = new PrideSecretView();
     ArmorView armorView = new ArmorView();
+    AppearanceView appearanceView = new AppearanceView();
+    TalentsView talentsView = new TalentsView();
+    WeaponsView weaponsView = new WeaponsView();
 
 
     public CharacterSheetView() {
@@ -26,10 +29,10 @@ public class CharacterSheetView extends View{
         characterSheetGrid.add(prideSecretView, 1, 0, 1, 2);
         //characterSheetGrid.add(new AttributesView(), 1, 1);
         characterSheetGrid.add(armorView, 1, 2, 1, 1);
-        //characterSheetGrid.add(new AttributesView(), 1, 3);
+        characterSheetGrid.add(weaponsView, 1, 3, 2, 1);
 
-        characterSheetGrid.add(new AttributesView(), 2, 0);
-        characterSheetGrid.add(new AttributesView(), 2, 1);
+        characterSheetGrid.add(appearanceView, 2, 0, 1, 2);
+        characterSheetGrid.add(talentsView, 2, 2);
         //characterSheetGrid.add(new AttributesView(), 2, 2);
         //characterSheetGrid.add(new AttributesView(), 2, 3);
 
@@ -51,7 +54,7 @@ public class CharacterSheetView extends View{
         row1.setMinHeight(70);
         //row1.setMaxHeight(70);
         row2.setFillHeight(true);
-        row2.setMinHeight(70);
+        //row2.setMinHeight(70);
         row2.minHeightProperty().bind(prideSecretView.heightProperty().subtract(row1.getMinHeight()));
         //row2.setMaxHeight(70);
         row3.setFillHeight(true);
@@ -61,6 +64,9 @@ public class CharacterSheetView extends View{
         row4.setFillHeight(true);
         row4.setMinHeight(200);
         row4.setVgrow(Priority.ALWAYS);
+
+        //appearanceView.prefHeightProperty().bind(row1.get)
+
 
         characterSheetGrid.getColumnConstraints().addAll(col1, col2, col3);
         characterSheetGrid.getRowConstraints().addAll(row1, row2, row3, row4);
@@ -81,6 +87,9 @@ public class CharacterSheetView extends View{
         skillsView.setDataContext(this.dataContext);
         prideSecretView.setDataContext(this.dataContext);
         armorView.setDataContext(this.dataContext);
+        appearanceView.setDataContext(this.dataContext);
+        talentsView.setDataContext(this.dataContext);
+        weaponsView.setDataContext(this.dataContext);
     }
 
     @Override
