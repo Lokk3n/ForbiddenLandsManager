@@ -1,6 +1,6 @@
 package ForbiddenLandsManager.Model;
 
-public class Weapon {
+public class Weapon extends Item{
     String name;
     int gearBonus;
     int damage;

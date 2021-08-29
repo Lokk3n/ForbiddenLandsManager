@@ -40,7 +40,7 @@ public class FLManager extends Application {
         MainTestView mtv = new MainTestView();
         Scene scene = new Scene(mtv);
         stage.setScene(scene);
-        stage.setMinWidth(900);
+        stage.setMinWidth(700);
         stage.setMinHeight(1000);
         mtv.prefWidthProperty().bind(stage.widthProperty());
         mtv.prefHeightProperty().bind(stage.heightProperty());

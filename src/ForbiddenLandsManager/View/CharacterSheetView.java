@@ -40,11 +40,11 @@ public class CharacterSheetView extends View{
         ColumnConstraints col2 = new ColumnConstraints();
         ColumnConstraints col3 = new ColumnConstraints();
         col1.setPercentWidth(33);
-        col1.setMinWidth(300);
+        //col1.setMinWidth(300);
         col2.setPercentWidth(33);
-        col2.setMinWidth(300);
+        //col2.setMinWidth(300);
         col3.setPercentWidth(34);
-        col3.setMinWidth(300);
+        //col3.setMinWidth(300);
 
         RowConstraints row1 = new RowConstraints();
         RowConstraints row2 = new RowConstraints();

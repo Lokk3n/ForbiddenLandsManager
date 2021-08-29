@@ -22,7 +22,7 @@ public class SkillsView extends View{
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
         skillTable.getColumns().addAll(skillNameColumn, attributeColumn, valueColumn);
-        skillTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        skillTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         skillVBox.getChildren().add(skillTable);
         this.getChildren().add(skillVBox);
