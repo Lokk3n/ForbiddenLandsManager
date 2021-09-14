@@ -14,6 +14,7 @@ public class MainTestView extends View {
     Button showFirstViewButton = new Button("First");
     Button showSecondViewButton = new Button("Second");
     Button showAttributesButton = new Button("Attributes");
+    Button showBattleMapButton = new Button("BattleMap");
     VBox column = new VBox();
 
     TestViewRegion viewWithRegion = new TestViewRegion();
@@ -31,13 +32,17 @@ public class MainTestView extends View {
             ServiceLocator.getRegionManager().requestNavigate("region1", CharacterSheetView.class, new NavigationParameters());
         });
 
+        showBattleMapButton.setOnAction((ev)->{
+            ServiceLocator.getRegionManager().requestNavigate("region1", BattleMapView.class, new NavigationParameters());
+        });
+
         this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         this.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         column.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         column.setBackground(new Background(new BackgroundFill(Color.LIGHTCORAL, CornerRadii.EMPTY, Insets.EMPTY)));
         viewWithRegion.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         viewWithRegion.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        column.getChildren().addAll(showFirstViewButton, showSecondViewButton, showAttributesButton, viewWithRegion);
+        column.getChildren().addAll(showFirstViewButton, showSecondViewButton, showAttributesButton, showBattleMapButton, viewWithRegion);
         column.prefWidthProperty().bind(this.widthProperty());
         column.prefHeightProperty().bind(this.heightProperty());;
         viewWithRegion.prefWidthProperty().bind(column.widthProperty());

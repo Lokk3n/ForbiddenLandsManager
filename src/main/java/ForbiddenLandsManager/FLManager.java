@@ -28,6 +28,7 @@ public class FLManager extends Application {
         viewHandler.registerViewViewModel(TestView1.class, TestViewModel1.class);
         viewHandler.registerViewViewModel(TestView2.class, TestViewModel2.class);
         viewHandler.registerViewViewModel(CharacterSheetView.class, CharacterSheetViewModel.class);
+        viewHandler.registerViewViewModel(BattleMapView.class, BattleMapViewModel.class);
 
 
         NavigationEvent navEvent = ServiceLocator.getEventAggregator().getEvent(NavigationEvent.class);

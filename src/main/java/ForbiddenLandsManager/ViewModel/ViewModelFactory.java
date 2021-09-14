@@ -25,6 +25,8 @@ public class ViewModelFactory {
             return (T) new AttributesViewModel();
         } else if (CharacterSheetViewModel.class.equals(viewModelClass)) {
             return (T) new CharacterSheetViewModel();
+        } else if (BattleMapViewModel.class.equals(viewModelClass)) {
+            return (T) new BattleMapViewModel();
         }
             else return null;
         }
