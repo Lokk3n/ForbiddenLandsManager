@@ -41,7 +41,7 @@ public class FLManager extends Application {
         Scene scene = new Scene(mtv);
         stage.setScene(scene);
         stage.setMinWidth(700);
-        stage.setMinHeight(1000);
+        stage.setMinHeight(500);
         mtv.prefWidthProperty().bind(stage.widthProperty());
         mtv.prefHeightProperty().bind(stage.heightProperty());
         stage.show();
@@ -53,5 +53,7 @@ public class FLManager extends Application {
         tc.x = 12;
         TestClass tc2 = new TestClass(7);
         tev.fire("hejho");
+        tev.fire("hejho");
+
     }
 }

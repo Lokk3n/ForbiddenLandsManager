@@ -1,22 +1,24 @@
 package ForbiddenLandsManager.Utilities;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public class Event<T>{
 
-    private final HashMap<UUID, Consumer<?>> actions = new HashMap<>();
+    private final HashMap<UUID, WeakReference<Consumer<T>>> actions = new HashMap<>();
 
     public void fire(T x){
-        for(Consumer c : actions.values()){
-            c.accept(x);
+        for(WeakReference<Consumer<T>> c : actions.values()){
+            Objects.requireNonNull(c.get()).accept(x);
         }
     }
 
-    public UUID subscribe(Consumer<?> r){
+    public UUID subscribe(Consumer<T> r){
         UUID id = UUID.randomUUID();
-        actions.put(id, r);
+        actions.put(id, new WeakReference<>(r));
         return id;
     }
 
