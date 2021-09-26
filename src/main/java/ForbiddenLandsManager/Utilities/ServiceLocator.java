@@ -47,4 +47,20 @@ public class ServiceLocator {
     public static void registerEventAggregator(EventAggregator evAgr){
         eventAggregator = evAgr;
     }
+
+    private static DialogManager dialogManager;
+    public static DialogManager getDialogManager(){
+        return dialogManager;
+    }
+    public static void registerDialogManager(DialogManager diMan){
+        dialogManager = diMan;
+    }
+
+    private static ServerProxy serverProxy;
+    public static ServerProxy getServerProxy(){
+        return serverProxy;
+    }
+    public static void registerServerProxy(ServerProxy serPro){
+        serverProxy = serPro;
+    }
 }

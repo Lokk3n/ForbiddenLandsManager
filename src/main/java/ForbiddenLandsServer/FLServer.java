@@ -1,5 +1,6 @@
 package ForbiddenLandsServer;
 
+import ForbiddenLandsServer.HibernateUtil.Entities.ServerStartEvent;
 import ForbiddenLandsServer.HibernateUtil.HibernateUtil;
 import ForbiddenLandsServer.NettyServer.NettyServer;
 import org.hibernate.Session;
@@ -14,7 +15,7 @@ public class FLServer {
     public static void main(String[] args) {
         FLServer mgr = new FLServer();
         mgr.createAndStoreEvent(new Date());
-        HibernateUtil.getSessionFactory().close();
+        //HibernateUtil.getSessionFactory().close();
 
         server = new NettyServer(port);
         try {
@@ -37,5 +38,6 @@ public class FLServer {
         session.save(theServerStartEvent);
 
         session.getTransaction().commit();
+        session.close();
     }
 }

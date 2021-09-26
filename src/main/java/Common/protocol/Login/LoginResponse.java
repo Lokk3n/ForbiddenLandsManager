@@ -1,5 +1,15 @@
 package Common.protocol.Login;
 
-public class LoginResponse {
+import Common.protocol.Response;
+
+public class LoginResponse extends Response {
     String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

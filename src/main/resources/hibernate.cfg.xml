@@ -32,6 +32,7 @@
     <property name="hbm2ddl.auto">update</property>
 
     <mapping resource="ServerStartEvent.hbm.xml"/>
+    <mapping resource="UserAccount.hbm.xml"/>
 
   </session-factory>
 

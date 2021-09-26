@@ -1,4 +1,4 @@
-package ForbiddenLandsServer;
+package ForbiddenLandsServer.HibernateUtil.Entities;
 
 import java.util.Date;
 

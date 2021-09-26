@@ -5,6 +5,7 @@ import Common.endecode.Encoder;
 import Common.protocol.Request;
 import Common.protocol.Response;
 import Common.serializer.JSONSerializer;
+import Common.serializer.SerializableSerializer;
 import ForbiddenLandsServer.NettyServer.Handlers.DiscardHandler;
 import ForbiddenLandsServer.NettyServer.Handlers.PipelineChoiceHandler;
 import ForbiddenLandsServer.NettyServer.Handlers.TimeoutHandler;
@@ -52,9 +53,9 @@ public class NettyServer{
                                    //Add timeout handler
                                    pipeline.addLast(new ReadTimeoutHandler(5));
                                    //Add decoder
-                                   pipeline.addLast(new Encoder(Response.class, new JSONSerializer()));
+                                   pipeline.addLast(new Encoder(Response.class, new SerializableSerializer()));
                                    //Add encoder
-                                   pipeline.addLast(new Decoder(Request.class, new JSONSerializer()));
+                                   pipeline.addLast(new Decoder(Request.class, new SerializableSerializer()));
                                    //Add request processor
                                    pipeline.addLast(new PipelineChoiceHandler());
                                    //Dodane w celu inicjalizacji

@@ -16,23 +16,29 @@ public class PipelineChoiceHandler extends SimpleChannelInboundHandler<Request> 
     protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
         // wybór drogi w zależności od rodzaju requestu. Ping służy utrzymaniu połączenia i odpowiada tylko pong,
         // Login nie musi zawierać tokenu więc będzie rozpatrywany osobno, Pozostałę requesty osobno
+        //System.out.println("Message received");
         ChannelPipeline pipe = ctx.pipeline();
         ChannelHandler follower;
         if(request instanceof Ping){
+            //System.out.println("Is ping");
             follower =  new PingPongHandler();
         }
         else if(request instanceof LoginRequest){
+            System.out.println("Is login request");
             follower = new LoginHandler();
         }
         else if(request instanceof GameRequest){
+            System.out.println("Is game request");
             follower = new DataHandler();
         }
         else{
+            System.out.println("Discarding...");
             follower = new DiscardHandler();
         }
 
 
         pipe.replace("follower", "follower", follower);
         ReferenceCountUtil.retain(request); // aby powstrzymać przed zwolnieniem zasobów i przekazać do następnego handlera
+        ctx.fireChannelRead(request);
     }
 }

@@ -16,16 +16,23 @@ public class ViewModelFactory {
         return instance;
     }
 
-    public <T extends ViewModel> T generateViewModel(Class<T> viewModelClass){
+    public <T extends ViewModel> T generateViewModel(Class<T> viewModelClass) {
+        T vm;
         if (TestViewModel1.class.equals(viewModelClass)) {
-            return (T) new TestViewModel1();
+            vm = (T) new TestViewModel1();
         } else if (TestViewModel2.class.equals(viewModelClass)) {
-            return (T) new TestViewModel2();
+            vm = (T) new TestViewModel2();
         } else if (AttributesViewModel.class.equals(viewModelClass)) {
-            return (T) new AttributesViewModel();
+            vm = (T) new AttributesViewModel();
         } else if (CharacterSheetViewModel.class.equals(viewModelClass)) {
-            return (T) new CharacterSheetViewModel();
+            vm = (T) new CharacterSheetViewModel();
+        } else if (MainViewModel.class.equals(viewModelClass)) {
+            vm = (T) new MainViewModel();
+        } else if (LoginViewModel.class.equals(viewModelClass)) {
+            vm = (T) new LoginViewModel();
+        } else {
+            vm = null;
         }
-            else return null;
-        }
+        return vm;
+    }
 }

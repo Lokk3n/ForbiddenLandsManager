@@ -2,14 +2,18 @@ package ForbiddenLandsManager.NettyClient;
 
 import Common.endecode.Decoder;
 import Common.endecode.Encoder;
+import Common.protocol.Login.LoginRequest;
+import Common.protocol.Login.LoginResponse;
 import Common.protocol.PingPong.Ping;
 import Common.protocol.Request;
 import Common.protocol.Response;
 import Common.serializer.SerializableSerializer;
 import ForbiddenLandsManager.NettyClient.Handlers.ClientHandler;
+import ForbiddenLandsManager.NettyClient.Handlers.PipelineChoiceHandler;
 import ForbiddenLandsManager.Utilities.WorkExecutor.IWorkExecutor;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -58,8 +62,9 @@ public class NettyClient {
                          pipeline.addLast(new Encoder(Request.class, new SerializableSerializer()));
                          //Add decoder
                          pipeline.addLast(new Decoder(Response.class, new SerializableSerializer()));
+                         pipeline.addLast(new PipelineChoiceHandler(futureMap, executor));
                          //Request processing class
-                         pipeline.addLast(clientHandler);
+                         pipeline.addLast("follower", clientHandler);
                      }
                  });
         /**
@@ -71,6 +76,7 @@ public class NettyClient {
                 send(new Ping());
                 try {
                     Thread.sleep(1000);
+                    System.out.println("Sending ping...");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -87,20 +93,20 @@ public class NettyClient {
      * @return
      */
     public CompletableFuture<Response> send(Request request) {
-        CompletableFuture<Response> channelFuture = new CompletableFuture<>();
+        CompletableFuture<Response> completableFuture = new CompletableFuture<>();
         try {
             if(request.getRequestId() != null) {
-                futureMap.put(request.getRequestId(), channelFuture);
+                futureMap.put(request.getRequestId(), completableFuture);
             }
             channel.writeAndFlush(request).await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return channelFuture;
+        return completableFuture;
     }
 
     public void close() {
-        eventLoopGroup.shutdownGracefully();
-        channel.closeFuture().syncUninterruptibly();
+        if(eventLoopGroup!=null) eventLoopGroup.shutdownGracefully();
+        if(channel!=null) channel.closeFuture().syncUninterruptibly();
     }
 }
