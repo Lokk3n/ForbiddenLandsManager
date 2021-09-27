@@ -1,5 +1,7 @@
 package ForbiddenLandsManager.View;
 
+import ForbiddenLandsManager.Model.Character;
+import ForbiddenLandsManager.Model.CircleCharacter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,8 +10,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -19,27 +22,30 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 
+import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BattleMapView extends View{
 
-    HBox row = new HBox();
-    Label test = new Label("Test");
-    Label test2 = new Label("Test2");
-    LinkedList<Circle> listOfCircles = new LinkedList<>();
+    LinkedList<CircleCharacter> listOfCircles = new LinkedList<>();
     Group root = new Group();
+    Point startPos = new Point(0,0);
+    Boolean circleIsPressed = false;
 
-    private TableView<Person> table = new TableView<Person>();
-    private final ObservableList<Person> data =
+    private TableView<Character> table = new TableView<>();
+    private final ObservableList<Character> data =
             FXCollections.observableArrayList(
-                    new Person("Wilczomlecz" ),
-                    new Person("Vuko"),
-                    new Person("Pinku"),
-                    new Person("S"),
-                    new Person("Michael"));
+                    new Character("Wilczomlecz", startPos),
+                    new Character("Vuko", new Point(100,200)),
+                    new Character("Pinku", new Point(150, 250)),
+                    new Character("S", startPos),
+                    new Character("Michael", startPos));
     final HBox hb = new HBox();
 
+    TableColumn firstNameCol = new TableColumn("First Name");
+    TableColumn distanceCol = new TableColumn("Distance between characters");
 
     public BattleMapView() {
 
@@ -56,86 +62,51 @@ public class BattleMapView extends View{
 
 
         // circles
-        Circle redCircle = createCircle(100, 50, 30, Color.RED);
-        Circle yellowCircle = createCircle(200, 50, 30, Color.YELLOW);
-        Circle blueCircle = createCircle(200, 150, 20, Color.BLUE);
-        Circle greenCircle = createCircle(400, 100, 40, Color.GREEN);
 
-        listOfCircles.add(redCircle);
-        listOfCircles.add(yellowCircle);
-        listOfCircles.add(blueCircle);
-        listOfCircles.add(greenCircle);
+        for (Character character : data){
+            CircleCharacter newChar = createCircle(character.getPosition().getX(), character.getPosition().getY(), 30, Color.RED, character);
+            newChar.toFront();
+            listOfCircles.add(newChar);
+        }
 
         // add the circles
         root.getChildren().addAll(listOfCircles);
 
-        //nie działa
 
-        /*
-        for(int j = 0; j < getListOfCircles().size(); j++ ) {
-            if (getListOfCircles().get(j).isPressed()) {
-                System.out.println("pressed");
-                for (int i = 0; i < getListOfCircles().size(); i++) {
-                    Line line = connect(getListOfCircles().get(j), getListOfCircles().get(i));
-                    getRoot().getChildren().add(line);
+        Double d1 =  0.00;
+        for( int j = 0; j < listOfCircles.size(); j++){
+            for( int i = 0; i < listOfCircles.size(); i++) {
+                if (listOfCircles.get(i).isPressed()) {
+                    CircleCharacter pressed = listOfCircles.get(i);
+                    d1 = calculateDistanceBetweenPoints(pressed, listOfCircles.get(j));
                 }
             }
         }
-
-         */
-
-        // add the lines
-        /*
-        root.getChildren().add(line1);
-        root.getChildren().add(line2);
-        root.getChildren().add(line3);
-
-         */
+        System.out.println(d1);
 
         // bring the circles to the front of the lines
-        redCircle.toFront();
-        blueCircle.toFront();
-        greenCircle.toFront();
-
-
 
         table.setEditable(true);
 
-        TableColumn firstNameCol = new TableColumn("First Name");
         firstNameCol.setMinWidth(100);
-        firstNameCol.setCellValueFactory( new PropertyValueFactory<Person, String>("firstName"));
+        firstNameCol.setCellValueFactory( new PropertyValueFactory<Character, String>("firstName"));
         firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         firstNameCol.setOnEditCommit(
-                    new EventHandler<TableColumn.CellEditEvent<Person, String>>() {
+                    new EventHandler<TableColumn.CellEditEvent<Character, String>>() {
                         @Override
-                        public void handle(TableColumn.CellEditEvent<Person, String> t) {
-                            ((Person) t.getTableView().getItems().get(
+                        public void handle(TableColumn.CellEditEvent<Character, String> t) {
+                            ((Character) t.getTableView().getItems().get(
                                     t.getTablePosition().getRow())
                             ).setFirstName(t.getNewValue());
                         }
                     });
-/*
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        lastNameCol.setMinWidth(100);
-        lastNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("lastName"));
-        lastNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        lastNameCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setLastName(t.getNewValue());
-                    }
-                }
-        );
 
- */
 
-        TableColumn distanceCol = new TableColumn("Distance between characters");
         distanceCol.setMinWidth(300);
-        distanceCol.setCellValueFactory(new PropertyValueFactory<Person, String>("distance"));
+        
+
+
+
         distanceCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 
@@ -153,7 +124,7 @@ public class BattleMapView extends View{
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                data.add(new Person(addFirstName.getText()));
+                data.add(new Character(addFirstName.getText(), startPos));
                 addFirstName.clear();
                 addEmail.clear();
             }
@@ -168,15 +139,6 @@ public class BattleMapView extends View{
         vbox.getChildren().addAll(table, hb);
 
         boxForTable.getChildren().add(vbox);
-
-        /*
-        for (int i = 0; i < getListOfCircles().size(); i++) {
-            Line line = connect(redCircle, getListOfCircles().get(i));
-            root.getChildren().add(line);
-
-        }
-
-         */
 
         this.getChildren().add(pane);
 
@@ -202,7 +164,7 @@ public class BattleMapView extends View{
 
         // bring the clicked circle to the front
 
-        Circle c = (Circle) (t.getSource());
+        CircleCharacter c = (CircleCharacter) (t.getSource());
 
         List<Line> listOfLines = new LinkedList<>();
 
@@ -218,13 +180,24 @@ public class BattleMapView extends View{
         for (int i = 0; i < getListOfCircles().size(); i++) {
             Line line = connect(c, getListOfCircles().get(i));
             root.getChildren().add(line);
+            line.toBack();
 
             }
 
         c.toFront();
+        c.requestFocus();
 
+        DecimalFormat currency = new DecimalFormat("0.00");
 
+        getDistanceCol().setCellValueFactory(cellData -> {
+            String formattedCost = " ";
 
+            for (CircleCharacter listOfCircle : listOfCircles) {
+                formattedCost = currency.format(calculateDistanceBetweenPoints(c, listOfCircle));
+
+            }
+            return new SimpleStringProperty(formattedCost);
+        });
     };
 
     private EventHandler<MouseEvent> mouseDraggedEventHandler = (t) ->
@@ -242,9 +215,9 @@ public class BattleMapView extends View{
 
     };
 
-    private Circle createCircle(double x, double y, double r, Color color)
+    private CircleCharacter createCircle(double x, double y, double r, Color color, Character character)
     {
-        Circle circle = new Circle(x, y, r, color);
+        CircleCharacter circle = new CircleCharacter(x, y, r, color, character);
 
         circle.setCursor(Cursor.CROSSHAIR);
 
@@ -280,41 +253,7 @@ public class BattleMapView extends View{
         l1.endYProperty().unbind();
     }
 
-    private void init (){
-
-        //
-        Group root = new Group();
-        Scene scene = new Scene(root, 500, 260);
-
-        // circles
-        Circle redCircle = createCircle(100, 50, 30, Color.RED);
-        Circle blueCircle = createCircle(200, 150, 20, Color.BLUE);
-        Circle greenCircle = createCircle(400, 100, 40, Color.GREEN);
-
-        Line line1 = connect(redCircle, blueCircle);
-        Line line2 = connect(redCircle, greenCircle);
-        Line line3 = connect(greenCircle, blueCircle);
-
-        // add the circles
-        root.getChildren().add(redCircle);
-        root.getChildren().add(blueCircle);
-        root.getChildren().add(greenCircle);
-
-        // add the lines
-        root.getChildren().add(line1);
-        root.getChildren().add(line2);
-        root.getChildren().add(line3);
-
-        // bring the circles to the front of the lines
-        redCircle.toFront();
-        blueCircle.toFront();
-        greenCircle.toFront();
-
-        // set the scene
-
-    }
-
-    public double calculateDistanceBetweenPoints(Circle mainChar, Circle otherChar) {
+    public double calculateDistanceBetweenPoints(CircleCharacter mainChar, CircleCharacter otherChar) {
         double x1 = mainChar.getCenterX();
         double y1 = mainChar.getCenterY();
         double x2 = otherChar.getCenterX();
@@ -322,9 +261,6 @@ public class BattleMapView extends View{
         return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 
-    public void setListOfCircles(LinkedList<Circle> listOfCircles) {
-        this.listOfCircles = listOfCircles;
-    }
 
     public double getOrgSceneX() {
         return orgSceneX;
@@ -366,27 +302,39 @@ public class BattleMapView extends View{
         this.root = root;
     }
 
-    public LinkedList<Circle> getListOfCircles() {
+    public LinkedList<CircleCharacter> getListOfCircles() {
         return listOfCircles;
     }
 
-    public class Person {
+    public void setListOfCircles(LinkedList<CircleCharacter> listOfCircles) {
+        this.listOfCircles = listOfCircles;
+    }
 
-        private final SimpleStringProperty firstName;
-//        private final double distanceBetweenChar;
+    public TableView<Character> getTable() {
+        return table;
+    }
 
-        public Person(String fName) {
-            this.firstName = new SimpleStringProperty(fName);
+    public void setTable(TableView<Character> table) {
+        this.table = table;
+    }
 
-        }
+    public ObservableList<Character> getData() {
+        return data;
+    }
 
-        public String getFirstName() {
-            return firstName.get();
-        }
+    public TableColumn getFirstNameCol() {
+        return firstNameCol;
+    }
 
-        public void setFirstName(String fName) {
-            firstName.set(fName);
-        }
+    public void setFirstNameCol(TableColumn firstNameCol) {
+        this.firstNameCol = firstNameCol;
+    }
 
+    public TableColumn getDistanceCol() {
+        return distanceCol;
+    }
+
+    public void setDistanceCol(TableColumn distanceCol) {
+        this.distanceCol = distanceCol;
     }
 }
